@@ -1,3 +1,1 @@
-# New-Repo
-second repo
-hlo wolrdddddd
+I am merging this code of teo repo

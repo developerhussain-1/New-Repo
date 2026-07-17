@@ -3,146 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Goku Calculator</title>
+<title>Merged Project</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
-
 body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#00111f,#062d52,#ff7b00);
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    padding:30px;
 }
 
-.calculator{
-    width:370px;
-    border-radius:20px;
-    overflow:hidden;
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(12px);
-    box-shadow:0 20px 40px rgba(0,0,0,.45);
-}
-
-.header{
-    height:170px;
-    background:url("https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200") center/cover;
-    position:relative;
-}
-
-.header::after{
-    content:"⚡ GOKU CALCULATOR ⚡";
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:0;
+h1{
     text-align:center;
-    padding:12px;
-    color:white;
-    font-size:22px;
-    font-weight:bold;
-    background:rgba(0,0,0,.45);
 }
+
+.container,
+.calculator{
+    margin:30px auto;
+    max-width:500px;
+    padding:20px;
+    border-radius:10px;
+    background:white;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+/* Random Number Generator */
+
+textarea{
+    width:100%;
+    height:150px;
+    padding:10px;
+    font-size:16px;
+}
+
+#output{
+    margin-top:20px;
+}
+
+.item{
+    padding:8px;
+    margin:5px 0;
+    background:#eef5ff;
+    border-radius:5px;
+}
+
+/* Calculator */
 
 .display{
     width:100%;
-    height:80px;
-    border:none;
-    outline:none;
-    background:#111;
-    color:#fff;
+    height:60px;
+    font-size:28px;
     text-align:right;
-    padding:20px;
-    font-size:32px;
+    margin-bottom:15px;
+    padding:10px;
 }
 
 .buttons{
     display:grid;
     grid-template-columns:repeat(4,1fr);
+    gap:8px;
 }
 
-button{
-    height:70px;
-    border:none;
-    font-size:22px;
+.buttons button{
+    padding:15px;
+    font-size:18px;
     cursor:pointer;
-    color:white;
-    background:#1f2937;
-    transition:.2s;
-}
-
-button:hover{
-    transform:scale(.97);
-    filter:brightness(1.15);
-}
-
-.operator{
-    background:#ff7b00;
-}
-
-.equal{
-    background:#ff9800;
-}
-
-.clear{
-    background:#d32f2f;
-}
-
-.del{
-    background:#1976d2;
-}
-
-.zero{
-    grid-column:span 2;
 }
 </style>
 </head>
 
 <body>
 
+<h1>Merged Project</h1>
+
+<hr>
+
+<div class="container">
+
+<h2>Random Number Generator</h2>
+
+<p>Enter one name per line:</p>
+
+<textarea id="names"></textarea>
+
+<button onclick="generate()">Generate Random Numbers</button>
+
+<div id="output"></div>
+
+</div>
+
+<hr>
+
 <div class="calculator">
 
-<div class="header"></div>
+<h2>Calculator</h2>
 
 <input id="display" class="display" readonly>
 
 <div class="buttons">
 
-<button class="clear" onclick="clearDisplay()">AC</button>
-<button class="del" onclick="del()">DEL</button>
-<button class="operator" onclick="press('%')">%</button>
-<button class="operator" onclick="press('/')">÷</button>
+<button onclick="clearDisplay()">AC</button>
+<button onclick="del()">DEL</button>
+<button onclick="press('%')">%</button>
+<button onclick="press('/')">÷</button>
 
 <button onclick="press('7')">7</button>
 <button onclick="press('8')">8</button>
 <button onclick="press('9')">9</button>
-<button class="operator" onclick="press('*')">×</button>
+<button onclick="press('*')">×</button>
 
 <button onclick="press('4')">4</button>
 <button onclick="press('5')">5</button>
 <button onclick="press('6')">6</button>
-<button class="operator" onclick="press('-')">−</button>
+<button onclick="press('-')">−</button>
 
 <button onclick="press('1')">1</button>
 <button onclick="press('2')">2</button>
 <button onclick="press('3')">3</button>
-<button class="operator" onclick="press('+')">+</button>
+<button onclick="press('+')">+</button>
 
-<button class="zero" onclick="press('0')">0</button>
+<button onclick="press('0')">0</button>
 <button onclick="press('.')">.</button>
-<button class="equal" onclick="calculate()">=</button>
+<button onclick="press('(')">(</button>
+<button onclick="press(')')">)</button>
+
+<button style="grid-column:span 4;" onclick="calculate()">=</button>
 
 </div>
 
 </div>
 
 <script>
+// Random Number Generator
+
+function shuffle(array){
+    for(let i=array.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [array[i],array[j]]=[array[j],array[i]];
+    }
+}
+
+function generate(){
+
+    const names=document.getElementById("names")
+        .value
+        .split("\n")
+        .map(x=>x.trim())
+        .filter(x=>x!="");
+
+    if(names.length===0){
+        alert("Please enter at least one name.");
+        return;
+    }
+
+    const numbers=[];
+
+    for(let i=1;i<=names.length;i++){
+        numbers.push(i);
+    }
+
+    shuffle(numbers);
+
+    let html="<h3>Results</h3>";
+
+    for(let i=0;i<names.length;i++){
+        html+=`<div class="item">${names[i]} → <strong>${numbers[i]}</strong></div>`;
+    }
+
+    document.getElementById("output").innerHTML=html;
+}
+
+// Calculator
+
 const display=document.getElementById("display");
 
 function press(value){
@@ -183,7 +214,9 @@ document.addEventListener("keydown",(e)=>{
     if(e.key==="Escape"){
         clearDisplay();
     }
+
 });
+
 </script>
 
 </body>

@@ -3,75 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Random Name Number Generator</title>
+<title>Merged Project</title>
 
 <style>
-    body{
-        font-family: Arial, sans-serif;
-        background:#f4f4f4;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        min-height:100vh;
-    }
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    padding:30px;
+}
 
-    .container{
-        background:white;
-        padding:25px;
-        border-radius:10px;
-        box-shadow:0 0 10px rgba(0,0,0,.2);
-        width:450px;
-    }
+h1{
+    text-align:center;
+}
 
-    textarea{
-        width:100%;
-        height:180px;
-        padding:10px;
-        font-size:16px;
-    }
+.container,
+.calculator{
+    margin:30px auto;
+    max-width:500px;
+    padding:20px;
+    border-radius:10px;
+    background:white;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
 
-    button{
-        margin-top:15px;
-        width:100%;
-        padding:12px;
-        font-size:16px;
-        cursor:pointer;
-        background:#007bff;
-        color:white;
-        border:none;
-        border-radius:5px;
-    }
+/* Random Number Generator */
 
-    button:hover{
-        background:#0056b3;
-    }
+textarea{
+    width:100%;
+    height:150px;
+    padding:10px;
+    font-size:16px;
+}
 
-    #output{
-        margin-top:20px;
-        font-size:18px;
-    }
+#output{
+    margin-top:20px;
+}
 
-    .item{
-        padding:8px;
-        margin:5px 0;
-        background:#eef5ff;
-        border-radius:5px;
-    }
+.item{
+    padding:8px;
+    margin:5px 0;
+    background:#eef5ff;
+    border-radius:5px;
+}
+
+/* Calculator */
+
+.display{
+    width:100%;
+    height:60px;
+    font-size:28px;
+    text-align:right;
+    margin-bottom:15px;
+    padding:10px;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+}
+
+.buttons button{
+    padding:15px;
+    font-size:18px;
+    cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
+<h1>Merged Project</h1>
+
+<hr>
+
 <div class="container">
 
-<h2>Random Number Assignment</h2>
+<h2>Random Number Generator</h2>
 
 <p>Enter one name per line:</p>
 
-<textarea id="names" placeholder="Ali
-Ahmed
-Sara
-Fatima"></textarea>
+<textarea id="names"></textarea>
 
 <button onclick="generate()">Generate Random Numbers</button>
 
@@ -79,7 +91,49 @@ Fatima"></textarea>
 
 </div>
 
+<hr>
+
+<div class="calculator">
+
+<h2>Calculator</h2>
+
+<input id="display" class="display" readonly>
+
+<div class="buttons">
+
+<button onclick="clearDisplay()">AC</button>
+<button onclick="del()">DEL</button>
+<button onclick="press('%')">%</button>
+<button onclick="press('/')">÷</button>
+
+<button onclick="press('7')">7</button>
+<button onclick="press('8')">8</button>
+<button onclick="press('9')">9</button>
+<button onclick="press('*')">×</button>
+
+<button onclick="press('4')">4</button>
+<button onclick="press('5')">5</button>
+<button onclick="press('6')">6</button>
+<button onclick="press('-')">−</button>
+
+<button onclick="press('1')">1</button>
+<button onclick="press('2')">2</button>
+<button onclick="press('3')">3</button>
+<button onclick="press('+')">+</button>
+
+<button onclick="press('0')">0</button>
+<button onclick="press('.')">.</button>
+<button onclick="press('(')">(</button>
+<button onclick="press(')')">)</button>
+
+<button style="grid-column:span 4;" onclick="calculate()">=</button>
+
+</div>
+
+</div>
+
 <script>
+// Random Number Generator
 
 function shuffle(array){
     for(let i=array.length-1;i>0;i--){
@@ -117,6 +171,51 @@ function generate(){
 
     document.getElementById("output").innerHTML=html;
 }
+
+// Calculator
+
+const display=document.getElementById("display");
+
+function press(value){
+    display.value+=value;
+}
+
+function clearDisplay(){
+    display.value="";
+}
+
+function del(){
+    display.value=display.value.slice(0,-1);
+}
+
+function calculate(){
+    try{
+        display.value=eval(display.value);
+    }catch{
+        display.value="Error";
+    }
+}
+
+document.addEventListener("keydown",(e)=>{
+
+    if("0123456789+-*/.%()".includes(e.key)){
+        display.value+=e.key;
+    }
+
+    if(e.key==="Enter"){
+        e.preventDefault();
+        calculate();
+    }
+
+    if(e.key==="Backspace"){
+        del();
+    }
+
+    if(e.key==="Escape"){
+        clearDisplay();
+    }
+
+});
 
 </script>
 

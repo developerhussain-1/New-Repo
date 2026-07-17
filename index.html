@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Name Number Generator</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        background:#f4f4f4;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        min-height:100vh;
+    }
+
+    .container{
+        background:white;
+        padding:25px;
+        border-radius:10px;
+        box-shadow:0 0 10px rgba(0,0,0,.2);
+        width:450px;
+    }
+
+    textarea{
+        width:100%;
+        height:180px;
+        padding:10px;
+        font-size:16px;
+    }
+
+    button{
+        margin-top:15px;
+        width:100%;
+        padding:12px;
+        font-size:16px;
+        cursor:pointer;
+        background:#007bff;
+        color:white;
+        border:none;
+        border-radius:5px;
+    }
+
+    button:hover{
+        background:#0056b3;
+    }
+
+    #output{
+        margin-top:20px;
+        font-size:18px;
+    }
+
+    .item{
+        padding:8px;
+        margin:5px 0;
+        background:#eef5ff;
+        border-radius:5px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Random Number Assignment</h2>
+
+<p>Enter one name per line:</p>
+
+<textarea id="names" placeholder="Ali
+Ahmed
+Sara
+Fatima"></textarea>
+
+<button onclick="generate()">Generate Random Numbers</button>
+
+<div id="output"></div>
+
+</div>
+
+<script>
+
+function shuffle(array){
+    for(let i=array.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [array[i],array[j]]=[array[j],array[i]];
+    }
+}
+
+function generate(){
+
+    const names=document.getElementById("names")
+        .value
+        .split("\n")
+        .map(x=>x.trim())
+        .filter(x=>x!="");
+
+    if(names.length===0){
+        alert("Please enter at least one name.");
+        return;
+    }
+
+    const numbers=[];
+
+    for(let i=1;i<=names.length;i++){
+        numbers.push(i);
+    }
+
+    shuffle(numbers);
+
+    let html="<h3>Results</h3>";
+
+    for(let i=0;i<names.length;i++){
+        html+=`<div class="item">${names[i]} → <strong>${numbers[i]}</strong></div>`;
+    }
+
+    document.getElementById("output").innerHTML=html;
+}
+
+</script>
+
+</body>
+</html>
